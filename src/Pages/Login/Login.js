@@ -2,29 +2,50 @@ import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthPorvider';
+import useToken from '../../hooks/useToken';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [loginError, setLoginError] = useState('')
     const { login } = useContext(AuthContext);
+    const [loginUserEmail, setLoginUserEmail] = useState('');
+    const [token] = useToken(loginUserEmail)
     const location = useLocation();
     const navigate = useNavigate();
 
     const from = location.state?.from?.pathname || "/";
 
-    const handleLogin = data => {
 
+    if (token) {
+        navigate(from, { replace: true })
+    }
+
+
+    const handleLogin = data => {
         setLoginError('')
 
         login(data.email, data.password)
             .then(result => {
-                navigate(from, { replace: true })
+                // getUserToken(data.email);
+                setLoginUserEmail(data.email)
             })
             .catch(error => {
                 console.log(error.message);
                 setLoginError(error.message)
             })
     }
+
+    // const getUserToken = (email) => {
+    //     fetch(`http://localhost:5000/jwt?email=${email}`)
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             if (data.accessToken) {
+    //                 localStorage.setItem('access-Token', data.accessToken)
+    //                 navigate(from, { replace: true })
+    //             }
+    //         })
+    // }
+
 
 
     return (

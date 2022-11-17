@@ -2,12 +2,19 @@ import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthPorvider';
+import useToken from '../../hooks/useToken';
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { createUser, updateUser } = useContext(AuthContext);
     const [signupError, setSignupError] = useState('');
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
+    const [token] = useToken(createdUserEmail);
     const navigate = useNavigate();
+
+    if (token) {
+        navigate('/')
+    }
 
 
     const handleSignUp = data => {
@@ -19,17 +26,47 @@ const Signup = () => {
                     displayName: data.name
                 }
                 updateUser(profile)
-                    .then(() => { })
+                    .then(() => {
+                        saveUser(data.name, data.email);
+                    })
                     .catch(error => {
                         console.log(error.message);
                     })
-                navigate('/')
             })
             .catch(error => {
                 setSignupError(error.message);
             })
 
     }
+
+    const saveUser = (name, email) => {
+        const user = { name, email };
+
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                setCreatedUserEmail(email)
+                // getUserToken(email)
+            })
+    }
+
+
+    // const getUserToken = (email) => {
+    //     fetch(`http://localhost:5000/jwt?email=${email}`)
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             if (data.accessToken) {
+    //                 localStorage.setItem('access-Token', data.accessToken)
+    //                 navigate('/');
+    //             }
+    //         })
+    // }
 
 
     return (
