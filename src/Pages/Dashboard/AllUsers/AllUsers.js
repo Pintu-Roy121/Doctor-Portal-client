@@ -54,7 +54,7 @@ const AllUsers = () => {
                                 <td>{
                                     user?.role !== 'admin' ? <button onClick={() => handleMakeAdmin(user?._id)} className='btn btn-xs btn-primary'>Make Admin</button>
                                         :
-                                        <button className='btn btn-xs btn-primary ' disabled>Make Admin</button>
+                                        <button className='text-success font-semibold'>Admin</button>
                                 }</td>
                                 <td><button className='btn btn-xs btn-error'>Delete</button></td>
                             </tr>)
