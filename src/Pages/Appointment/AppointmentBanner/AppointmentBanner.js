@@ -14,7 +14,13 @@ const AppointmentBanner = ({ selectedDate, setSelectedDate }) => {
                         <DayPicker
                             mode='single'
                             selected={selectedDate}
-                            onSelect={setSelectedDate}
+                            // onSelect={setSelectedDate}
+                            // avoiding double click error..................
+                            onSelect={(selectedDate) => {
+                                if (selectedDate) {
+                                    setSelectedDate(selectedDate)
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -24,3 +30,9 @@ const AppointmentBanner = ({ selectedDate, setSelectedDate }) => {
 };
 
 export default AppointmentBanner;
+
+// onSelect = {(selectedDate) => {
+//     if (selectedDate) {
+//         setSelectedDate(selectedDate)
+//     }
+// }}

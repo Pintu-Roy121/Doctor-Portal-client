@@ -73,15 +73,17 @@ const MyAppointment = () => {
                                 <td>{booking.slot}</td>
                                 <td>{booking.price}</td>
                                 <td>
-                                    {
-                                        booking?.price && !booking.paid && <Link to={`/dashboard/payment/${booking._id}`}>
-                                            <button className='btn btn-sm btn-primary mx-3'
-                                            >Pay</button>
-                                        </Link>
-                                    }
-                                    {
-                                        booking?.price && booking.paid && <span className='btn btn-success btn-sm'>Paid</span>
-                                    }
+                                    <>
+                                        {
+                                            booking?.price && !booking.paid && <Link to={`/dashboard/payment/${booking._id}`}>
+                                                <button className='btn btn-sm btn-primary mx-3'
+                                                >Pay</button>
+                                            </Link>
+                                        }
+                                        {
+                                            booking?.price && booking.paid && <span className='mx-5 font-bold text-success '>Paid</span>
+                                        }
+                                    </>
                                 </td>
                                 <td>
                                     <button onClick={() => handleBookings(booking._id)} className='btn btn-sm btn-error'>Cancel
